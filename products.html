@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Khám phá điện thoại, laptop, tai nghe và phụ kiện công nghệ tại AliHaiBa.">
+  <title>Sản phẩm | AliHaiBa</title>
+  <link href="css/bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/fontawesome/css/all.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+    rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/responsive.css" rel="stylesheet">
+</head>
+
+<body>
+  <div data-site-header></div>
+
+  <main>
+
+    <section class="page-hero page-hero-compact">
+      <div class="container">
+        <h1>Sản phẩm <span>công nghệ.</span></h1>
+        <p>Tìm thiết bị phù hợp với sở thích và nhu cầu của bạn.</p>
+      </div>
+    </section>
+
+    <section class="section-space pt-4">
+      <div class="container">
+        <div class="catalog-toolbar">
+          <div class="catalog-search">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input id="product-search" type="search" class="form-control" placeholder="Tìm sản phẩm..."
+              aria-label="Tìm sản phẩm">
+          </div>
+
+          <select id="category-filter" class="form-select" aria-label="Lọc danh mục">
+            <option value="">Tất cả danh mục</option>
+            <option>Điện thoại</option>
+            <option>Laptop</option>
+            <option>Âm thanh</option>
+            <option>Phụ kiện</option>
+          </select>
+
+          <select id="sort-products" class="form-select" aria-label="Sắp xếp sản phẩm">
+            <option value="featured">Sắp xếp: Nổi bật</option>
+            <option value="price-asc">Giá: Thấp đến cao</option>
+            <option value="price-desc">Giá: Cao đến thấp</option>
+            <option value="name">Tên: A đến Z</option>
+          </select>
+        </div>
+
+        <div id="catalog-count" class="catalog-count mb-3" aria-live="polite"></div>
+        <div id="product-list" class="row g-4"></div>
+      </div>
+    </section>
+  </main>
+
+  <div data-site-footer></div>
+  <div data-cart-root></div>
+  <div data-auth-root></div>
+
+  <script src="css/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/forms.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>
