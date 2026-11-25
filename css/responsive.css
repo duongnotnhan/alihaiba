@@ -1,6 +1,47 @@
 /* =========================================================
-   CSS / Responsive layout overrides
+   CSS / Fluid sizing and responsive layout
    ========================================================= */
+.hero-title {
+  font-size: clamp(2.7rem, 5vw, 4.55rem);
+}
+.hero-proof {
+  gap: clamp(25px, 5vw, 55px);
+}
+.section-title {
+  font-size: clamp(1.7rem, 3vw, 2.25rem);
+}
+.page-hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+}
+.product-price {
+  font-size: clamp(0.6rem, 3.2vw, 1.05rem);
+}
+.product-price small {
+  font-size: clamp(0.68rem, 2.7vw, 0.78rem);
+}
+.offcanvas {
+  --bs-offcanvas-width: min(440px, 100vw);
+}
+.promo-marquee-group {
+  gap: clamp(28px, 5vw, 72px); padding-inline: clamp(22px, 4vw, 56px);
+}
+.product-detail-name {
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+}
+.page-transition::before {
+  width: min(78vw, 430px);
+}
+.page-transition-content {
+  width: clamp(220px, 42vw, 360px);
+}
+@supports (font-size: 1cqi) {
+  .product-content {
+    container-type: inline-size;
+  }
+  .product-price {
+    font-size: clamp(0.6rem, 10cqi, 1.05rem);
+  }
+}
 @media (max-width: 991.98px) {
   .hero-section {
     padding: 70px 0 65px;
@@ -92,5 +133,33 @@
   }
   .account-greeting {
     max-width: 110px;
+  }
+  .product-content {
+    padding-inline: 12px;
+  }
+}
+@media (max-width: 350px) {
+  .product-price {
+    font-size: clamp(0.6rem, 2.9vw, 0.64rem);
+  }
+  .product-price small {
+    font-size: clamp(0.55rem, 2.6vw, 0.6rem);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .product-detail-image {
+    animation: none;
+  }
+  .page-transition {
+    display: none;
+  }
+  .promo-marquee {
+    overflow-x: auto;
+  }
+  .promo-marquee-track {
+    animation: none;
+  }
+  .promo-marquee-group[aria-hidden="true"]:last-child {
+    display: none;
   }
 }

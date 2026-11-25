@@ -6,6 +6,25 @@
         renderCart
     } = app;
 
+    const promoMessages = [
+        ["fa-bolt", "Ưu đãi công nghệ mỗi ngày", "Khám phá thiết bị yêu thích tại AliHaiBa"],
+        ["fa-truck-fast", "Giao hàng toàn quốc", "Miễn phí cho đơn từ 2.367.000đ"],
+        ["fa-shield-halved", "An tâm mua sắm", "Sản phẩm chính hãng, bảo hành rõ ràng"],
+        ["fa-headset", "Luôn sẵn sàng hỗ trợ", "AliHaiBa đồng hành cùng bạn"]
+    ];
+
+    function renderPromoGroup() {
+        return promoMessages.map(([icon, title, detail]) => `
+            <span class="promo-marquee-item">
+                <i class="fa-solid ${icon}" aria-hidden="true"></i>
+                <span>
+                    <strong>${title}</strong>
+                    <small>${detail}</small>
+                </span>
+            </span>
+        `).join("");
+    }
+
     function renderHeader() {
         const host = document.querySelector("[data-site-header]");
         if (!host) return;
@@ -104,6 +123,20 @@
         if (!host) return;
 
         host.innerHTML = `
+            <div class="promo-marquee" role="region" aria-label="Thông tin ưu đãi AliHaiBa">
+                <div class="promo-marquee-track">
+                    <div class="promo-marquee-group" aria-hidden="true">
+                        ${renderPromoGroup()}
+                    </div>
+                    <div class="promo-marquee-group" aria-hidden="true">
+                        ${renderPromoGroup()}
+                    </div>
+                </div>
+                <span class="visually-hidden">
+                    Ưu đãi công nghệ mỗi ngày. Giao hàng toàn quốc, miễn phí cho đơn từ 2.367.000đ.
+                    Sản phẩm chính hãng, bảo hành rõ ràng. AliHaiBa luôn sẵn sàng hỗ trợ.
+                </span>
+            </div>
             <footer class="site-footer">
                 <div class="container">
                     <div class="row g-4">
