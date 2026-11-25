@@ -17,12 +17,22 @@
         handleContactForm,
         handleSignIn,
         handleSignUp,
-        renderProducts
+        handleChangePassword,
+        renderProducts,
+        renderProductDetailModal,
+        openProductDetails
     } = app;
 
     function handleClick(event) {
         const target = event.target;
         if (!(target instanceof Element)) return;
+
+        const detailTrigger = target.closest("[data-product-detail]");
+        if (detailTrigger) {
+            event.preventDefault();
+            openProductDetails(detailTrigger.dataset.productDetail);
+            return;
+        }
 
         const addButton = target.closest("[data-product-id]");
         if (addButton) {
@@ -80,6 +90,9 @@
         } else if (form.matches("#sign-up-form")) {
             event.preventDefault();
             handleSignUp(form);
+        } else if (form.matches("#change-password-form")) {
+            event.preventDefault();
+            handleChangePassword(form);
         }
     }
 
@@ -111,6 +124,7 @@
     renderFeaturedProducts();
     initializeProductPage();
     renderCart();
+    renderProductDetailModal();
 
     document.addEventListener("click", handleClick);
     document.addEventListener("submit", handleSubmit);

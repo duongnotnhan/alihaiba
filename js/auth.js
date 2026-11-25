@@ -134,6 +134,18 @@
                                         aria-selected="false"
                                     >Tạo tài khoản</button>
                                 </li>
+                                <li class="nav-item" id="change-password-tab-item" role="presentation">
+                                    <button
+                                        class="nav-link"
+                                        id="change-password-tab"
+                                        data-bs-toggle="pill"
+                                        data-bs-target="#change-password-pane"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="change-password-pane"
+                                        aria-selected="false"
+                                    >Đổi mật khẩu</button>
+                                </li>
                             </ul>
 
                             <div class="tab-content">
@@ -240,6 +252,60 @@
                                         <button class="btn btn-primary w-100" type="submit">Tạo tài khoản</button>
                                     </form>
                                 </div>
+                                <div
+                                    class="tab-pane fade"
+                                    id="change-password-pane"
+                                    role="tabpanel"
+                                    aria-labelledby="change-password-tab"
+                                    tabindex="0"
+                                >
+                                    <form id="change-password-form" class="auth-form">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="current-password">
+                                                Mật khẩu hiện tại<span class="required-marker">(*)</span>
+                                            </label>
+                                            <input
+                                                class="form-control"
+                                                id="current-password"
+                                                name="currentPassword"
+                                                type="password"
+                                                autocomplete="current-password"
+                                                required
+                                            >
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="new-password">
+                                                Mật khẩu mới<span class="required-marker">(*)</span>
+                                            </label>
+                                            <input
+                                                class="form-control"
+                                                id="new-password"
+                                                name="newPassword"
+                                                type="password"
+                                                autocomplete="new-password"
+                                                minlength="8"
+                                                required
+                                            >
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="confirm-new-password">
+                                                Nhập lại mật khẩu mới<span class="required-marker">(*)</span>
+                                            </label>
+                                            <input
+                                                class="form-control"
+                                                id="confirm-new-password"
+                                                name="confirmPassword"
+                                                type="password"
+                                                autocomplete="new-password"
+                                                minlength="8"
+                                                required
+                                            >
+                                        </div>
+                                        <button class="btn btn-primary w-100" type="submit">
+                                            Cập nhật mật khẩu
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
 
                             <p class="auth-notice mt-3 mb-0">
@@ -256,7 +322,14 @@
     function openAuthModal(view = "sign-in") {
         const modalElement = document.querySelector("#account-modal");
         const bootstrapApi = window.bootstrap;
-        const tabId = view === "sign-up" ? "#sign-up-tab" : "#sign-in-tab";
+        const signedInUser = getCurrentUser();
+        const selectedView =
+            view === "change-password" && !signedInUser ? "sign-in" : view;
+        const tabIds = {
+            "sign-up": "#sign-up-tab",
+            "change-password": "#change-password-tab"
+        };
+        const tabId = tabIds[selectedView] || "#sign-in-tab";
         const tabElement = document.querySelector(tabId);
 
         if (!bootstrapApi || !bootstrapApi.Tab || !bootstrapApi.Modal) {
@@ -358,6 +431,53 @@
         }
     }
 
+    async function handleChangePassword(form) {
+        if (!form.reportValidity()) return;
+
+        const currentUser = getCurrentUser();
+        if (!currentUser) {
+            notify("Vui lòng đăng nhập để đổi mật khẩu.", "info");
+            openAuthModal("sign-in");
+            return;
+        }
+
+        const currentPassword = form.elements.currentPassword.value;
+        const newPassword = form.elements.newPassword.value;
+        const confirmation = form.elements.confirmPassword.value;
+        if (newPassword !== confirmation) {
+            notify("Mật khẩu mới nhập lại chưa trùng khớp.", "error");
+            return;
+        }
+
+        try {
+            const currentHash = await hashPassword(currentPassword, currentUser.salt);
+            if (currentHash !== currentUser.passwordHash) {
+                notify("Mật khẩu hiện tại không chính xác.", "error");
+                return;
+            }
+
+            const newSalt = createSalt();
+            const updatedAccount = {
+                ...currentUser,
+                salt: newSalt,
+                passwordHash: await hashPassword(newPassword, newSalt),
+                updatedAt: new Date().toISOString()
+            };
+            const updatedAccounts = getAccounts().map((account) =>
+                account.id === currentUser.id ? updatedAccount : account
+            );
+
+            if (!writeStorage(STORAGE_KEYS.accounts, updatedAccounts)) return;
+
+            form.reset();
+            closeAuthModal();
+            notify("Đã đổi mật khẩu thành công.");
+        } catch (error) {
+            console.error("AliHaiBa could not change the demo account password.", error);
+            notify("Không thể đổi mật khẩu. Hãy mở trang qua localhost hoặc HTTPS.", "error");
+        }
+    }
+
     function handleSignOut() {
         if (!removeStorage(STORAGE_KEYS.session)) return;
         app.renderHeader();
@@ -371,6 +491,7 @@
         closeAuthModal,
         handleSignUp,
         handleSignIn,
+        handleChangePassword,
         handleSignOut
     });
 })(window.AliHaiBa = window.AliHaiBa || {});

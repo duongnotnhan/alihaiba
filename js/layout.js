@@ -8,9 +8,15 @@
 
     function renderHeader() {
         const host = document.querySelector("[data-site-header]");
+        if (!host) return;
 
         const currentPage = window.location.pathname.split("/").pop() || "index.html";
         const user = getCurrentUser();
+        const changePasswordTab = document.querySelector("#change-password-tab-item");
+        if (changePasswordTab) {
+            changePasswordTab.classList.toggle("d-none", !user);
+        }
+
         const links = [
             ["index.html", "Trang chủ"],
             ["products.html", "Sản phẩm"],
@@ -21,6 +27,11 @@
             `<span class="account-greeting" title="Xin chào, ${escapeHtml(user.name)}">
                 Xin chào, ${escapeHtml(user.name)}
             </span>
+            <button
+                class="btn btn-outline-primary btn-sm"
+                type="button"
+                data-open-auth="change-password"
+            >Đổi mật khẩu</button>
             <button class="btn btn-outline-secondary btn-sm" type="button" data-sign-out>
                 Đăng xuất
             </button>` :
@@ -90,6 +101,7 @@
 
     function renderFooter() {
         const host = document.querySelector("[data-site-footer]");
+        if (!host) return;
 
         host.innerHTML = `
             <footer class="site-footer">
