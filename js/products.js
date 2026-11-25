@@ -58,6 +58,8 @@
 
 	function renderFeaturedProducts() {
 		const host = document.querySelector("[data-featured-products]");
+		if (!host) return;
+
 		host.innerHTML = PRODUCTS.slice(0, 4).map(renderProductCard).join("");
 	}
 
@@ -67,7 +69,7 @@
 		const categoryFilter = document.querySelector("#category-filter");
 		const sortSelect = document.querySelector("#sort-products");
 		const countLabel = document.querySelector("#catalog-count");
-		if (!searchInput || !categoryFilter || !sortSelect || !countLabel) {
+		if (!host || !searchInput || !categoryFilter || !sortSelect || !countLabel) {
 			return;
 		}
 
