@@ -131,6 +131,9 @@
                     <div class="promo-marquee-group" aria-hidden="true">
                         ${renderPromoGroup()}
                     </div>
+                    <div class="promo-marquee-group" aria-hidden="true">
+                        ${renderPromoGroup()}
+                    </div>
                 </div>
                 <span class="visually-hidden">
                     Ưu đãi công nghệ mỗi ngày. Giao hàng toàn quốc, miễn phí cho đơn từ 2.367.000đ.
