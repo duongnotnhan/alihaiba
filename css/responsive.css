@@ -28,11 +28,11 @@
 .product-detail-name {
   font-size: clamp(1.35rem, 3vw, 1.8rem);
 }
-.page-transition::before {
-  width: min(78vw, 430px);
-}
 .page-transition-content {
-  width: clamp(220px, 42vw, 360px);
+  width: clamp(270px, 86vmin, 700px);
+}
+.page-transition-tagline {
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
 }
 @supports (font-size: 1cqi) {
   .product-content {
