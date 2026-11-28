@@ -8,6 +8,8 @@
 		escapeHtml
 	} = app;
 
+	let favoritesOnly = false;
+
 	function renderProductCard(product) {
 		const favorites = readStorage(STORAGE_KEYS.favorites, []);
 		const isFavorite = Array.isArray(favorites) && favorites.includes(product.id);
@@ -86,13 +88,16 @@
 
 		const searchTerm = searchInput.value.trim().toLocaleLowerCase("vi");
 		const selectedCategory = categoryFilter.value;
+		const storedFavorites = readStorage(STORAGE_KEYS.favorites, []);
+		const favorites = Array.isArray(storedFavorites) ? storedFavorites : [];
 
 		const filteredProducts = PRODUCTS
 			.filter((product) => {
 				const searchableText = `${product.name} ${product.category}`.toLocaleLowerCase("vi");
 				const matchesCategory = !selectedCategory || product.category === selectedCategory;
 				const matchesSearch = !searchTerm || searchableText.includes(searchTerm);
-				return matchesCategory && matchesSearch;
+				const matchesFavorites = !favoritesOnly || favorites.includes(product.id);
+				return matchesCategory && matchesSearch && matchesFavorites;
 			})
 			.sort((firstProduct, secondProduct) => {
 				if (sortSelect.value === "price-asc") {
@@ -107,13 +112,43 @@
 				return 0;
 			});
 
-		countLabel.textContent = `Hiển thị ${filteredProducts.length} / ${PRODUCTS.length} sản phẩm`;
+		countLabel.textContent = favoritesOnly
+			? `Hiển thị ${filteredProducts.length} sản phẩm yêu thích`
+			: `Hiển thị ${filteredProducts.length} / ${PRODUCTS.length} sản phẩm`;
 		host.innerHTML = filteredProducts.length
 			? filteredProducts.map(renderProductCard).join("")
 			: `<div class="empty-state">
-				<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-				Không tìm thấy sản phẩm phù hợp.
+				<i class="fa-${favoritesOnly ? "regular" : "solid"} fa-${favoritesOnly ? "heart" : "magnifying-glass"}" aria-hidden="true"></i>
+				${favoritesOnly
+					? "Chưa có sản phẩm yêu thích phù hợp."
+					: "Không tìm thấy sản phẩm phù hợp."}
 			</div>`;
+	}
+
+	function toggleFavoritesFilter() {
+		favoritesOnly = !favoritesOnly;
+
+		const toggleButton = document.querySelector("#favorites-filter");
+		if (toggleButton) {
+			toggleButton.setAttribute("aria-pressed", String(favoritesOnly));
+			toggleButton.classList.toggle("is-active", favoritesOnly);
+			toggleButton.setAttribute(
+				"aria-label",
+				favoritesOnly
+					? "Tắt bộ lọc sản phẩm yêu thích"
+					: "Chỉ hiển thị sản phẩm yêu thích"
+			);
+			toggleButton.title = favoritesOnly
+				? "Đang lọc sản phẩm yêu thích"
+				: "Lọc sản phẩm yêu thích";
+
+			const icon = toggleButton.querySelector("i");
+			if (icon) {
+				icon.className = `${favoritesOnly ? "fa-solid" : "fa-regular"} fa-heart`;
+			}
+		}
+
+		renderProducts();
 	}
 
 	function renderProductDetailModal() {
@@ -238,6 +273,7 @@
 		renderProductCard,
 		renderFeaturedProducts,
 		renderProducts,
+		toggleFavoritesFilter,
 		renderProductDetailModal,
 		openProductDetails
 	});

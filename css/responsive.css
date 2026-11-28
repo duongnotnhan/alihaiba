@@ -105,6 +105,12 @@
   .catalog-toolbar>.form-select {
     width: auto; min-width: 0; flex: 1;
   }
+  .favorites-filter-button {
+    flex: 0 0 46px; padding: 0;
+  }
+  .favorites-filter-button span {
+    display: none;
+  }
   .contact-form {
     padding: 20px;
   }

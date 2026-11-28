@@ -19,6 +19,7 @@
         handleSignUp,
         handleChangePassword,
         renderProducts,
+        toggleFavoritesFilter,
         renderProductDetailModal,
         openProductDetails
     } = app;
@@ -162,6 +163,7 @@
         const searchInput = document.querySelector("#product-search");
         const categorySelect = document.querySelector("#category-filter");
         const sortSelect = document.querySelector("#sort-products");
+        const favoritesFilter = document.querySelector("#favorites-filter");
         const productList = document.querySelector("#product-list");
         if (!searchInput || !categorySelect || !sortSelect || !productList) return;
 
@@ -176,6 +178,7 @@
         searchInput.addEventListener("input", renderProducts);
         categorySelect.addEventListener("change", renderProducts);
         sortSelect.addEventListener("change", renderProducts);
+        favoritesFilter?.addEventListener("click", toggleFavoritesFilter);
         renderProducts();
     }
 

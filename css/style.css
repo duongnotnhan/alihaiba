@@ -262,6 +262,21 @@ a {
 .catalog-toolbar>.form-select {
   width: 205px;
 }
+.favorites-filter-button {
+  display: inline-flex; min-width: 46px; min-height: 46px; align-items: center; justify-content: center;
+  gap: 8px; padding: 0 14px; border: 1px solid var(--color-line); border-radius: 10px;
+  color: var(--color-muted); background: #fff; transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.favorites-filter-button span {
+  white-space: nowrap;
+}
+.favorites-filter-button:hover,
+.favorites-filter-button.is-active {
+  border-color: #ec5271; color: #ec5271; background: #fff7f9;
+}
+.favorites-filter-button.is-active i {
+  font-weight: 900;
+}
 .catalog-count {
   color: var(--color-muted); font-size: 0.86rem;
 }
